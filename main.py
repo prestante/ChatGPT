@@ -3,17 +3,15 @@ import openai
 
 openai.api_key = config.OPENAI_TOKEN
 
-lst = [
-    {"role": "system", "content": "You are a helpful assistant."},
-    {"role": "user", "content": "Who won the world series in 2020?"},
-    {"role": "assistant", "content": "The Los Angeles Dodgers won the World Series in 2020."},
-    {"role": "user", "content": "Where was it played?"}
-]
+#lst = [{"role": "system", "content": "You are a helpful translator between Russian and Serbian. I will give you phrases on one of two languages, and you will translate it to the opposite language. Your Serbian spelling must be in latin."},]
+lst = [{"role": "system", "content": "You are a helpful assistant."},]
 
-
-answer = openai.ChatCompletion.create(
-    model="gpt-4",
-    messages=lst,
-)
-
-print(answer.choices[0].message.content)
+while True:
+    question = input('Q: ')
+    lst.append({"role": "user", "content": question})
+    answer = openai.ChatCompletion.create(
+        model="gpt-4",
+        messages=lst,
+    ).choices[0].message.content
+    lst.append({"role": "assistant", "content": answer})
+    print(f'A: {answer}')
